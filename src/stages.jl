@@ -178,7 +178,8 @@ function stages(data, X, q, R, fig=true)
             legend=false,
             framestyle=:box,
             grid=:true,
-            minorgrid=:true)
+            minorgrid=:true,
+            margin=5mm)
 
         X = data[:, 1]
         Y = data[:, 3]
@@ -216,7 +217,7 @@ function stages(data, X, q, R, fig=true)
             seriestype=:steppost, color=:cyan,
             linestyle=:solid)
         plot!(x, y,
-        seriescolor=:green,
+            seriescolor=:green,
             linestyle=:solid,
             markershape=:circle,
             markersize=2)
