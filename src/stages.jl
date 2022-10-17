@@ -179,7 +179,7 @@ function stages(data, X, q, R, fig=true)
             framestyle=:box,
             grid=:true,
             minorgrid=:true,
-            margin=5mm)
+            margin=5Plots.mm)
 
         X = data[:, 1]
         Y = data[:, 3]
