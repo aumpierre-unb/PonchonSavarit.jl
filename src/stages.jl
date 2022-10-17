@@ -147,7 +147,8 @@ function stages(data, X, q, R, fig=true)
             legend=false,
             framestyle=:box,
             grid=:true,
-            minorgrid=:true)
+            minorgrid=:true,
+            margin=5Plots.mm)
 
         plot!(data[:, 1], data[:, 2],
             seriescolor=:blue,
@@ -178,7 +179,8 @@ function stages(data, X, q, R, fig=true)
             legend=false,
             framestyle=:box,
             grid=:true,
-            minorgrid=:true)
+            minorgrid=:true,
+            margin=5Plots.mm)
 
         X = data[:, 1]
         Y = data[:, 3]
@@ -223,8 +225,7 @@ function stages(data, X, q, R, fig=true)
 
         display(p1, p2,
             plot(layout=(2, 1),
-                size=(500, 800),
-                margin=5Plots.mm))
+                size=(500, 800)))
     end
     return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
