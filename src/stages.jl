@@ -150,6 +150,7 @@ function stages(data, X, q, R, fig=true)
             minorgrid=:true)
 
         plot!(data[:, 1], data[:, 2],
+            seriestype=:scatter,
             seriescolor=:blue,
             linestyle=:solid,
             markershape=:diamond,
@@ -221,7 +222,7 @@ function stages(data, X, q, R, fig=true)
             markershape=:circle,
             markersize=2)
 
-        display(plot(layout=(2, 1), p1, p2, size=(600, 900)))
+        display(plot(layout=(2, 1), p1, p2, size=(400, 900)))
     end
     return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
