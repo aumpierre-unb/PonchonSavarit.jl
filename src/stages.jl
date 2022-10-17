@@ -221,7 +221,7 @@ function stages(data, X, q, R, fig=true)
             markershape=:circle,
             markersize=2)
 
-        display(plot(layout=(2, 1), p1, p2, size=(400, 800)))
+        display(plot(layout=(2, 1), p1, p2, size=(500, 800)))
     end
     return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
