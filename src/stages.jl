@@ -187,7 +187,7 @@ function stages(data, X, q, R, fig=true)
         Y = data[:, 3]
         plot!(X, Y,
             seriescolor=:black,
-            markershape=:rect,
+            markershape=:circle,
             markerstrokecolor=:black,
             markersize=3)
 
