@@ -153,20 +153,17 @@ function stages(data, X, q, R, fig=true)
             seriescolor=:blue,
             linestyle=:solid,
             markershape=:diamond,
-            markercolor=:blue,
             markersize=2)
         plot!(data[:, 3], data[:, 4],
             seriescolor=:red,
             linestyle=:solid,
             markershape=:diamond,
-            markercolor=:red,
             markersize=2)
         plot!([xD; xD; xD; xF; xB; xB; xB],
             [g(xD); k(xD); hdelta; hF; hlambda; g(xB); k(xB)],
             seriescolor=:green,
             linestyle=:solid,
             markershape=:circle,
-            markercolor=:green,
             markersize=2)
         plot!([x1 xF y1], [h1 hF H1],
             color=:magenta,
@@ -186,9 +183,8 @@ function stages(data, X, q, R, fig=true)
         X = data[:, 1]
         Y = data[:, 3]
         plot!(X, Y,
-            seriestype=:line, color=:black,
+            seriescolor=:black,
             markershape=:rect,
-            markercolor=:black,
             markersize=2)
 
         X = [0; 1]
@@ -220,13 +216,12 @@ function stages(data, X, q, R, fig=true)
             seriestype=:steppost, color=:cyan,
             linestyle=:solid)
         plot!(x, y,
-            color=:green,
+        seriescolor=:green,
             linestyle=:solid,
             markershape=:circle,
-            markercolor=:green,
             markersize=2)
 
-        display(plot(layout=(2, 1), p1, p2, size=(500, 800)))
+        display(plot(layout=(2, 1), p1, p2, size=(600, 900)))
     end
     return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
