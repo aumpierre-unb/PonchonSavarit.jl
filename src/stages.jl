@@ -150,7 +150,6 @@ function stages(data, X, q, R, fig=true)
             minorgrid=:true)
 
         plot!(data[:, 1], data[:, 2],
-            seriestype=:scatter,
             seriescolor=:blue,
             linestyle=:solid,
             markershape=:diamond,
