@@ -150,20 +150,20 @@ function stages(data, X, q, R, fig=true)
             minorgrid=:true)
 
         plot!(data[:, 1], data[:, 2],
-            color=:blue,
+            seriescolor=:blue,
             linestyle=:solid,
             markershape=:diamond,
             markercolor=:blue,
             markersize=2)
         plot!(data[:, 3], data[:, 4],
-            color=:red,
+            seriescolor=:red,
             linestyle=:solid,
             markershape=:diamond,
             markercolor=:red,
             markersize=2)
         plot!([xD; xD; xD; xF; xB; xB; xB],
             [g(xD); k(xD); hdelta; hF; hlambda; g(xB); k(xB)],
-            color=:green,
+            seriescolor=:green,
             linestyle=:solid,
             markershape=:circle,
             markercolor=:green,
