@@ -1,5 +1,5 @@
-include("bissection.jl")
-include("interp1.jl")
+include("PonchonSavarit.bissection.jl")
+include("PonchonSavarit.interp1.jl")
 
 @doc raw"""
 `S=qR2S(data,X,q,R)`
@@ -41,7 +41,7 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
 x=[0.88 0.46 0.11];
 q=0.56;
 R=2;
-S=qR2S(x,q,R)
+S=PonchonSavarit.qR2S(x,q,R)
 ```
 
 Compute the reflux ratio at the bottom
@@ -69,7 +69,7 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
 x=[0.88 0.46 0.11];
 q=1;
 R=2;
-S=qR2S(data,x,q,R)
+S=PonchonSavarit.qR2S(data,x,q,R)
 ```
 """
 function qR2S(data, X, q, R)
@@ -83,14 +83,14 @@ function qR2S(data, X, q, R)
     if q == 1
         q = 1 - 1e-10
     end
-    g(x) = interp1(data(:, 1), data(:, 2), x)
-    k(x) = interp1(data(:, 3), data(:, 4), x)
+    g(x) = PonchonSavarit.interp1(data(:, 1), data(:, 2), x)
+    k(x) = PonchonSavarit.interp1(data(:, 3), data(:, 4), x)
 
     foo(x) = q / (q - 1) * x - xF / (q - 1)
-    bar(x) = interp1(data(:, 1), data(:, 3), x) - foo(x)
-    x1 = bissection(bar, xB, xD)
+    bar(x) = PonchonSavarit.interp1(data(:, 1), data(:, 3), x) - foo(x)
+    x1 = PonchonSavarit.bissection(bar, xB, xD)
     h1 = g(x1)
-    y1 = interp1(data(:, 1), data(:, 3), x1)
+    y1 = PonchonSavarit.interp1(data(:, 1), data(:, 3), x1)
     H1 = k(y1)
     hF = (H1 - h1) * (1 - q) + h1
 
