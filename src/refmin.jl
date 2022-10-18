@@ -1,5 +1,5 @@
-include("PonchonSavarit.bissection.jl")
-include("PonchonSavarit.interp1.jl")
+include("bissection.jl")
+include("interp1.jl")
 
 @doc raw"""
 `r=refmin(y,X,q)`
@@ -39,7 +39,7 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       1.    0.263 1.    1.405];
 x=[0.88 0.46];
 q=0.56;
-r=PonchonSavarit.refmin(data,x,q)
+r=refmin(data,x,q)
 ```
 
 Compute the minimum value of the reflux ratio
@@ -66,7 +66,7 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       1      2.250 1        17.390];
 x=[0.88 0.46 0.08];
 q=1;
-r=PonchonSavarit.refmin(data,x,q)
+r=refmin(data,x,q)
 ```
 """
 function refmin(data, X, q)
@@ -80,13 +80,13 @@ function refmin(data, X, q)
     if q == 1
         q = 1 - 1e-10
     end
-    g(x) = PonchonSavarit.interp1(data[:, 1], data[:, 2], x)
-    k(x) = PonchonSavarit.interp1(data[:, 3], data[:, 4], x)
+    g(x) = interp1(data[:, 1], data[:, 2], x)
+    k(x) = interp1(data[:, 3], data[:, 4], x)
     foo(x) = q / (q - 1) * x - xF / (q - 1)
-    bar(x) = PonchonSavarit.interp1(data[:, 1], data[:, 3], x) - foo(x)
+    bar(x) = interp1(data[:, 1], data[:, 3], x) - foo(x)
     x1 = bissection(bar, xB, xD)
     h1 = g(x1)
-    y1 = PonchonSavarit.interp1(data[:, 1], data[:, 3], x1)
+    y1 = interp1(data[:, 1], data[:, 3], x1)
     H1 = k(y1)
     hliq = g(xD)
     Hvap = k(xD)

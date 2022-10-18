@@ -1,7 +1,7 @@
-include("PonchonSavarit.interp1.jl")
-include("PonchonSavarit.interp2.jl")
-include("PonchonSavarit.bissection.jl")
-include("PonchonSavarit.refmin.jl")
+include("interp1.jl")
+include("interp2.jl")
+include("bissection.jl")
+include("refmin.jl")
 
 using Plots
 
@@ -51,9 +51,9 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       1.    0.263 1.    1.405];
 x=[0.88 0.46 0.11];
 q=0.56;
-r=PonchonSavarit.refmin(data,x,q);
+r=refmin(data,x,q);
 R=1.70*r;
-N=PonchonSavarit.stages(data,x,q,R)
+N=stages(data,x,q,R)
 ```
 
 Compute the number of theoretical stages
@@ -84,9 +84,9 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       1.     2.250 1.       17.390];
 x=[0.88 0.46 0.11];
 q=1;
-r=PonchonSavarit.refmin(data,x,q);
+r=refmin(data,x,q);
 R=1.70*r;
-N=PonchonSavarit.stages(data,x,q,R)
+N=stages(data,x,q,R)
 ```
 """
 function stages(data, X, q, R, fig=true)
@@ -104,15 +104,15 @@ function stages(data, X, q, R, fig=true)
         println("Minimum reflux ratio exceeded.")
         return
     end
-    f(x) = PonchonSavarit.interp1(data[:, 3], data[:, 1], x)
-    g(x) = PonchonSavarit.interp1(data[:, 1], data[:, 2], x)
-    k(x) = PonchonSavarit.interp1(data[:, 3], data[:, 4], x)
+    f(x) = interp1(data[:, 3], data[:, 1], x)
+    g(x) = interp1(data[:, 1], data[:, 2], x)
+    k(x) = interp1(data[:, 3], data[:, 4], x)
 
     foo(x) = q / (q - 1) * x - xF / (q - 1)
     bar(x) = interp1(data[:, 1], data[:, 3], x) - foo(x)
-    x1 = PonchonSavarit.bissection(bar, xB, xD)
+    x1 = bissection(bar, xB, xD)
     h1 = g(x1)
-    y1 = PonchonSavarit.interp1(data[:, 1], data[:, 3], x1)
+    y1 = interp1(data[:, 1], data[:, 3], x1)
     H1 = k(y1)
     hF = (H1 - h1) * (1 - q) + h1
 
@@ -122,7 +122,7 @@ function stages(data, X, q, R, fig=true)
 
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
 
-    x2 = PonchonSavarit.interp2(g, X, [xD; hdelta], [xB; hlambda])
+    x2 = interp2(g, X, [xD; hdelta], [xB; hlambda])
 
     y = [xD]
     x = [f(y[end])]
