@@ -78,6 +78,7 @@ function qR2S(data, X, q, R)
     xB = X[3]
     if xD < xF || xB > xF
         println("Inconsistent feed and/or products compositions.")
+        return
     end
     if q == 1
         q = 1 - 1e-10

@@ -75,6 +75,7 @@ function refmin(data, X, q)
     xB = X[3]
     if xD < xF
         println("Inconsistent feed and/or products compositions.")
+        return
     end
     if q == 1
         q = 1 - 1e-10
