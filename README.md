@@ -1,6 +1,6 @@
 # PonchonSavarit.jl
 
-[![DOI](https://zenodo.org/badge/543161141.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
+[![DOI](https://zenodo.org/badge/553159585.svg)](https://zenodo.org/badge/latestdoi/553159585)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![version](https://juliahub.com/docs/PonchonSavarit/version.svg)](https://juliahub.com/ui/Packages/PonchonSavarit/WauTj)
 
@@ -39,16 +39,11 @@ Pkg.add(path="https://github.com/aumpierre-unb/PonchonSavarit.jl")
 using PonchonSavarit
 ```
 
-<!--
 ## Citation of PonchonSavarit
 
 You can cite all versions (both released and pre-released), by using
-[10.5281/zenodo.xxxxxxxxxx](https://doi.org/10.5281/zenodo.xxxxxxxxxx).
-
+[10.5281/zenodo.7218007](https://doi.org/10.5281/zenodo.7218007).
 This DOI represents all versions, and will always resolve to the latest one.
-
-For citation of the last released version of PonchonSavarit, please check CITATION file at the [maintainer's repository](https://github.com/aumpierre-unb/PonchonSavarit.jl).
--->
 
 ## The PonchonSavarit Module for Julia
 
