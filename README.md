@@ -55,7 +55,7 @@ PonchonSavarit provides the following functions:
 
 ### stages
 
-stages omputes the number of theoretical stages
+stages computes the number of theoretical stages
 of a distillation column using the Ponchon-Savarit method given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
