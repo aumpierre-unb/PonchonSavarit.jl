@@ -91,7 +91,7 @@ the composition of the feed is 46 %,
 the composition of the column's bottom product is 11 %,
 the feed quality is 54 %, and
 the reflux ratio at the top of the column is
-70 % higher that the minimum reflux ratio:
+70 % higher that the minimum reflux ratio.
 
 ```julia
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
@@ -102,12 +102,12 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.525 0.378 0.75  1.515;
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
-      0.1   0.263 1.    1.405];
+      1.    0.263 1.    1.405];
 x=[0.88 0.46 0.11];
 q=0.54;
 r=refmin(data,x,q);
 R=1.70*r;
-N=stages(data,x,q,R,false,false)
+N=stages(data,x,q,R,false)
 ```
 
 Compute the number of theoretical stages
@@ -120,7 +120,8 @@ the composition of the feed is 46 %,
 the composition of the column's bottom product is 11 %,
 the feed is a saturated liquid, and
 the reflux ratio at the top of the column is
-70 % higher that the minimum reflux ratio:
+70 % higher that the minimum reflux ratio,
+and plot a schematic diagram of the solution.
 
 ```julia
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
@@ -140,7 +141,7 @@ x=[0.88 0.46 0.11];
 q=1;
 r=refmin(data,x,q);
 R=1.70*r;
-N=stages(data,x,q,R,false,false)
+N=stages(data,x,q,R,false)
 ```
 
 ### refmin
