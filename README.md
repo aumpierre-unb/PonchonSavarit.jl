@@ -76,7 +76,7 @@ If fig = false is given, no plot is shown.
 **Syntax:**
 
 ```dotnetcli
-N=stages(y,X,q,R[,updown[,fig]])
+N=stages(y,X,q,R[,fig])
 ```
 
 **Examples:**
@@ -141,7 +141,7 @@ x=[0.88 0.46 0.11];
 q=1;
 r=refmin(data,x,q);
 R=1.70*r;
-N=stages(data,x,q,R,false)
+N=stages(data,x,q,R)
 ```
 
 ### refmin
@@ -170,7 +170,7 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the feed quality is 54 %:
+the feed quality is 54 %.
 
 ```julia
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
@@ -193,7 +193,7 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the feed is a saturated liquid:
+the feed is a saturated liquid.
 
 ```julia
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
