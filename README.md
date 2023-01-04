@@ -291,6 +291,7 @@ S=qR2S(data,x,q,R)
 ### See Also
 
 [McCabeThiele.jl](https://github.com/aumpierre-unb/McCabeThiele.jl),
+[Psychrometrics.jl](https://github.com/aumpierre-unb/Psychrometrics.jl),
 [InternalFluidFlow.jl](https://github.com/aumpierre-unb/InternalFluidFlow.jl).
 
 Copyright &copy; 2022 Alexandre Umpierre
