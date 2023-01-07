@@ -88,7 +88,6 @@ function qR2S(data, X, q, R)
     end
     g(x) = interp1(data(:, 1), data(:, 2), x)
     k(x) = interp1(data(:, 3), data(:, 4), x)
-
     foo(x) = q / (q - 1) * x - xF / (q - 1)
     bar(x) = interp1(data(:, 1), data(:, 3), x) - foo(x)
     x1 = bissection(bar, xB, xD)
@@ -96,15 +95,12 @@ function qR2S(data, X, q, R)
     y1 = interp1(data(:, 1), data(:, 3), x1)
     H1 = k(y1)
     hF = (H1 - h1) * (1 - q) + h1
-
     hliq = g(xD)
     Hvap = k(xD)
     hdelta = (Hvap - hliq) * R + Hvap
-
     hliq = g(xB)
     Hvap = k(xB)
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-
     return (hlambda - hliq) / (hliq - Hvap)
 end
 

@@ -113,7 +113,6 @@ function stages(data, X, q, R, fig=true)
     f(x) = interp1(data[:, 3], data[:, 1], x)
     g(x) = interp1(data[:, 1], data[:, 2], x)
     k(x) = interp1(data[:, 3], data[:, 4], x)
-
     foo(x) = q / (q - 1) * x - xF / (q - 1)
     bar(x) = interp1(data[:, 1], data[:, 3], x) - foo(x)
     x1 = bissection(bar, xB, xD)
@@ -121,15 +120,11 @@ function stages(data, X, q, R, fig=true)
     y1 = interp1(data[:, 1], data[:, 3], x1)
     H1 = k(y1)
     hF = (H1 - h1) * (1 - q) + h1
-
     hliq = g(xD)
     Hvap = k(xD)
     hdelta = (Hvap - hliq) * R + Hvap
-
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-
     x2 = interp2(g, X, [xD; hdelta], [xB; hlambda])
-
     y = [xD]
     x = [f(y[end])]
     while x[end] > xB
@@ -142,13 +137,10 @@ function stages(data, X, q, R, fig=true)
         y = [y; interp2(k, X, P, Q)]
         x = [x; f(y[end])]
     end
-
     x = [xD; x]
     y = [y; x[end]]
-
     h = g.(x)
     H = k.(y)
-
     if fig
         p1 = plot(xlabel="x,y", ylabel="h,H",
             xlims=(0, 1),
@@ -156,7 +148,6 @@ function stages(data, X, q, R, fig=true)
             framestyle=:box,
             grid=:true,
             minorgrid=:true)
-
         plot!(data[:, 1], data[:, 2],
             seriescolor=:blue,
             linestyle=:solid,
@@ -183,14 +174,12 @@ function stages(data, X, q, R, fig=true)
             reshape([h H]'[1:end-1], (2 * size(x, 1) - 1, 1)),
             color=:cyan,
             linestyle=:solid)
-
         p2 = plot(xlabel="x", ylabel="y",
             xlims=(0, 1), ylims=(0, 1),
             legend=false,
             framestyle=:box,
             grid=:true,
             minorgrid=:true)
-
         X = data[:, 1]
         Y = data[:, 3]
         plot!(X, Y,
@@ -198,32 +187,26 @@ function stages(data, X, q, R, fig=true)
             markershape=:diamond,
             markerstrokecolor=:black,
             markersize=3)
-
         X = [0; 1]
         Y = X
         plot!(X, Y,
             seriestype=:line, color=:black,
             linestyle=:dash)
-
         plot!([xD],
             seriestype=:vline, color=:blue,
             linestyle=:dash)
-
         plot!([xB],
             seriestype=:vline, color=:red,
             linestyle=:dash)
-
         if q != 1 - 1e-10
             Y = q / (q - 1) .* X .- xF / (q - 1)
             plot!(X, Y,
                 linestyle=:dash, color=:magenta)
         end
-
         plot!([xF],
             seriestype=:vline,
             color=:magenta,
             linestyle=:dash)
-
         plot!(x, y,
             seriestype=:steppost, color=:cyan,
             linestyle=:solid)
@@ -233,7 +216,6 @@ function stages(data, X, q, R, fig=true)
             markershape=:circle,
             markerstrokecolor=:green,
             markersize=3)
-
         display(plot(layout=(2, 1), p1, p2,
             size=(500, 800),
             margin=5Plots.mm))
