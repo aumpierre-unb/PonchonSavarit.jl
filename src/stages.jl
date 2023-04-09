@@ -42,7 +42,7 @@ the composition of the feed is 46 %,
 the composition of the column's bottom product is 11 %,
 the feed quality is 54 %, and
 the reflux ratio at the top of the column is
-70 % higher that the minimum reflux ratio.
+70 % higher that the minimum reflux ratio:
 
 ```
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol

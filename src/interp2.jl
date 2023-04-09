@@ -3,7 +3,7 @@ include("bissection.jl")
 @doc raw"""
 `interp2` computes the interpolation of a number.
 
-`interp2` is an auxiliary function of
+`interp2` is an internal function of
 the `PonchonSavarit` toolbox.
 """
 function interp2(f, X, P, Q)

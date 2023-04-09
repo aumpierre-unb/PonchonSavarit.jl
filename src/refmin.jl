@@ -28,7 +28,7 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the feed quality is 54 %.
+the feed quality is 54 %:
 
 ```
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
