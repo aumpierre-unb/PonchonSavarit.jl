@@ -75,7 +75,7 @@ R=2;
 S=qR2S(data,x,q,R)
 ```
 """
-function qR2S(data, X, q, R)
+function qR2S(data::Matrix{Float64}, X::Vector{Float64}, q::Float64, R::Float64)
     xD = X[1]
     xF = X[2]
     xB = X[3]

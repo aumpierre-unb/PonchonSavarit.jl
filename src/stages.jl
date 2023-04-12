@@ -95,7 +95,7 @@ R=1.70*r;
 N=stages(data,x,q,R)
 ```
 """
-function stages(data, X, q, R, fig=true)
+function stages(data::Matrix{Float64}, X::Vector{Float64}, q::Float64, R::Float64, fig::Bool=true)
     xD = X[1]
     xF = X[2]
     xB = X[3]
