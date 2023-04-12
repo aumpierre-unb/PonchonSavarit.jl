@@ -72,7 +72,7 @@ q=1;
 r=refmin(data,x,q)
 ```
 """
-function refmin(data::Matrix{Float64}, X::Vector{Float64}, q::Float64)
+function refmin(data::Matrix{Float64}, X::Vector{Float64}, q::Number)
     xD = X[1]
     xF = X[2]
     xB = X[3]
