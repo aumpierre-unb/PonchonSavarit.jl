@@ -10,7 +10,7 @@ using the Ponchon-Savarit method given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
 the vector of the fractions of the products and the feed,
-the feed quality, and
+the feed quality and
 the reflux ratio at the top of the column.
 
 If feed is a saturated liquid, feed quality q = 1,
@@ -19,7 +19,7 @@ feed quality is reset to q = 1 - 1e-10.
 `qR2S` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 
-See also: `stages`, `refmin`.
+See also: `stages`, `refmin`, `qS2R`, `RS2q`.
 
 Examples
 ==========
@@ -74,8 +74,7 @@ S=qR2S(data,x,1,2)
 function qR2S(data::Matrix{Float64}, z::Vector{Float64}, q::Number, R::Number)
     xD, xF, xB = z
     if xD < xF || xB > xF
-        println("Inconsistent feed and/or products compositions.")
-        return
+        error("Inconsistent feed and/or products compositions.")
     end
     if q == 1
         q = 1 - 1e-10
@@ -95,6 +94,6 @@ function qR2S(data::Matrix{Float64}, z::Vector{Float64}, q::Number, R::Number)
     hliq = g(xB)
     Hvap = k(xB)
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    return (hlambda - hliq) / (hliq - Hvap)
+    (hlambda - hliq) / (hliq - Hvap)
 end
 
