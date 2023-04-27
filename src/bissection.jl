@@ -7,7 +7,7 @@ given it is found between the guess values.
 the `PonchonSavarit` toolbox.
 """
 function bissection(f, x1, x2)
-    while abs(f(x2)) > 1e-4
+    while abs(f(x2)) > 5e-4
         x = (x1 + x2) / 2
         if f(x) * f(x1) > 0
             x1 = x
@@ -15,5 +15,5 @@ function bissection(f, x1, x2)
             x2 = x
         end
     end
-    return x2
+    x2
 end

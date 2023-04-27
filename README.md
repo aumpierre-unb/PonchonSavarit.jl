@@ -75,8 +75,8 @@ If fig = false is given, no plot is shown.
 
 **Syntax:**
 
-```dotnetcli
-N=stages(y,X,q,R[,fig])
+```julia
+stages(data::Union{Matrix{Float64},Function},z::Vector{Float64};q::Number=NaN,R::Number=NaN,S::Number=NaN,fig::Bool=true)
 ```
 
 **Examples:**
@@ -88,8 +88,8 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the composition of the column's bottom product is 11 %,
-the feed quality is 54 %, and
+the composition of the bottoms is 8 %,
+the feed quality is 54 % and
 the reflux ratio at the top of the column is
 70 % higher that the minimum reflux ratio:
 
@@ -103,11 +103,9 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46 0.11];
-q=0.54;
-r=refmin(data,x,q);
-R=1.70*r;
-N=stages(data,x,q,R,false)
+x=[0.88 0.46 0.08];
+r=refmin(data,x,q=0.56)[1];
+N=stages(data,x,q=0.56,R=1.70*r,fig=false)
 ```
 
 Compute the number of theoretical stages
@@ -118,10 +116,11 @@ and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
 the composition of the column's bottom product is 11 %,
-the feed is a saturated liquid, and
+the composition of the bottoms is 8 %,
+the feed is a saturated liquid and
 the reflux ratio at the top of the column is
 70 % higher that the minimum reflux ratio,
-and plot a schematic diagram of the solution.
+and plot a schematic diagram of the solution:
 
 ```julia
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
@@ -138,10 +137,8 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
 x=[0.88 0.46 0.11];
-q=1;
-r=refmin(data,x,q);
-R=1.70*r;
-N=stages(data,x,q,R)
+r=refmin(data,x)[1];
+N=stages(data,x,R=1.70*r)
 ```
 
 ### refmin
@@ -158,7 +155,7 @@ feed quality is reset to q = 1 - 1e-10.
 
 **Syntax:**
 
-```dotnetcli
+```julia
 r=refmin(y,X,q)
 ```
 
@@ -170,6 +167,7 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
+the composition of the bottoms is 8 % and
 the feed quality is 54 %:
 
 ```julia
@@ -182,9 +180,8 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46];
-q=0.54;
-r=refmin(data,x,q)
+x=[0.88 0.46 0.08];
+r=refmin(data,x,q=0.56)
 ```
 
 Compute the minimum value of the reflux ratio
@@ -193,6 +190,7 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
+the composition of the bottoms is 8 % and
 the feed is a saturated liquid.
 
 ```julia
@@ -210,8 +208,7 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
 x=[0.88 0.46 0.08];
-q=1;
-r=refmin(data,x,q)
+r=refmin(data,x)
 ```
 
 ### qR2S
@@ -230,7 +227,7 @@ feed quality is reset to q = 1 - 1e-10.
 
 **Syntax:**
 
-```dotnetcli
+```julia
 S=qR2S(X,q,R)
 ```
 
@@ -240,8 +237,8 @@ Compute the reflux ratio at the bottom
 of a distillation column for oxygen and nitrogen given
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the composition of the column's bottom product is 11 %,
-the feed quality is 54 %, and
+the composition of the bottoms is 8 %,
+the feed quality is 54 % and
 the reflux ratio at the top of the column is 2:
 
 ```julia
@@ -254,19 +251,17 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46 0.11];
-q=0.54;
-R=2;
-S=qR2S(x,q,R)
+x=[0.88 0.46 0.08];
+S=qR2S(x,0.56,2)
 ```
 
 Compute the reflux ratio at the bottom
 of a distillation column for acetone and methanol given
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the composition of the column's bottom product is 11 %,
+the composition of the bottoms is 8 %,
 the feed is saturated liquid, and
-the reflux ratio at the top of the column is 2.
+the reflux ratio at the top of the column is 2:
 
 ```julia
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
@@ -282,10 +277,8 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.8    2.284 0.915    17.980;
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
-x=[0.88 0.46 0.11];
-q=1;
-R=2;
-S=qR2S(data,x,q,R)
+x=[0.88 0.46 0.08];
+S=qR2S(data,x,1,2)
 ```
 
 ### See Also

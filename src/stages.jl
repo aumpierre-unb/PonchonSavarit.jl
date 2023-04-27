@@ -6,7 +6,7 @@ include("refmin.jl")
 using Plots
 
 @doc raw"""
-`N=stages(y,X,q,R[,fig])`
+`stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Number=NaN, R::Number=NaN, S::Number=NaN, fig::Bool=true)`
 
 `stages` computes the number of theoretical stages
 of a distillation column
@@ -39,8 +39,8 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the composition of the column's bottom product is 11 %,
-the feed quality is 54 %, and
+the composition of the bottoms is 8 %,
+the feed quality is 54 % and
 the reflux ratio at the top of the column is
 70 % higher that the minimum reflux ratio:
 
@@ -54,11 +54,9 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46 0.11];
-q=0.56;
-r=refmin(data,x,q);
-R=1.70*r;
-N=stages(data,x,q,R,false)
+x=[0.88 0.46 0.08];
+r=refmin(data,x,q=0.56)[1];
+N=stages(data,x,q=0.56,R=1.70*r,fig=false)
 ```
 
 Compute the number of theoretical stages
@@ -68,11 +66,11 @@ a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 46 %,
-the composition of the column's bottom product is 11 %,
-the feed is a saturated liquid, and
+the composition of the bottoms is 8 %,
+the feed is a saturated liquid and
 the reflux ratio at the top of the column is
 70 % higher that the minimum reflux ratio,
-and plot a schematic diagram of the solution.
+and plot a schematic diagram of the solution:
 
 ```
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
@@ -89,26 +87,34 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
 x=[0.88 0.46 0.11];
-q=1;
-r=refmin(data,x,q);
-R=1.70*r;
-N=stages(data,x,q,R)
+r=refmin(data,x)[1];
+N=stages(data,x,R=1.70*r)
 ```
 """
-function stages(data::Matrix{Float64}, X::Vector{Float64}, q::Number, R::Number, fig::Bool=true)
-    xD = X[1]
-    xF = X[2]
-    xB = X[3]
+function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Number=NaN, R::Number=NaN, S::Number=NaN, fig::Bool=true)
+    xD, xF, xB = z
     if xD < xF || xB > xF
-        println("Inconsistent feed and/or products compositions.")
-        return
+        error("Inconsistent feed and/or products compositions.")
     end
     if q == 1
         q = 1 - 1e-10
     end
-    if R <= refmin(data, X, q)
-        println("Minimum reflux ratio exceeded.")
-        return
+    a = isnan.([q, R, S]) .!= 1
+    if sum(a) != 2
+        error("""stages requires that two parameter among
+        the feed quality,
+        the reflux ratio at the top of the column and
+        the reflux ratio at the bottom of the column
+        be given alone.""")
+    end
+    if a == [1, 0, 1]
+        R = qS2R(z, q, S)
+    elseif a == [0, 1, 1]
+        q = RS2q(z, R, S)
+    end
+    r = refmin(data, z, q=q)[1]
+    if R <= r
+        error("Minimum reflux ratios exceeded.")
     end
     f(x) = interp1(data[:, 3], data[:, 1], x)
     g(x) = interp1(data[:, 1], data[:, 2], x)
@@ -124,7 +130,7 @@ function stages(data::Matrix{Float64}, X::Vector{Float64}, q::Number, R::Number,
     Hvap = k(xD)
     hdelta = (Hvap - hliq) * R + Hvap
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    x2 = interp2(g, X, [xD; hdelta], [xB; hlambda])
+    x2 = interp2(g, z, [xD; hdelta], [xB; hlambda])
     y = [xD]
     x = [f(y[end])]
     while x[end] > xB
@@ -134,92 +140,88 @@ function stages(data::Matrix{Float64}, X::Vector{Float64}, q::Number, R::Number,
             P = [xB; hlambda]
         end
         Q = [x[end]; g(x[end])]
-        y = [y; interp2(k, X, P, Q)]
+        y = [y; interp2(k, z, P, Q)]
         x = [x; f(y[end])]
     end
     x = [xD; x]
     y = [y; x[end]]
     h = g.(x)
     H = k.(y)
-    if fig
-        p1 = plot(xlabel="x,y", ylabel="h,H",
-            xlims=(0, 1),
-            legend=false,
-            framestyle=:box,
-            grid=:true,
-            minorgrid=:true)
-        plot!(data[:, 1], data[:, 2],
-            seriescolor=:blue,
-            linestyle=:solid,
-            markershape=:diamond,
-            markerstrokecolor=:blue,
-            markersize=3)
-        plot!(data[:, 3], data[:, 4],
-            seriescolor=:red,
-            linestyle=:solid,
-            markershape=:diamond,
-            markerstrokecolor=:red,
-            markersize=3)
-        plot!([xD; xD; xD; xF; xB; xB; xB],
-            [g(xD); k(xD); hdelta; hF; hlambda; g(xB); k(xB)],
-            seriescolor=:green,
-            linestyle=:solid,
-            markershape=:circle,
-            markerstrokecolor=:green,
-            markersize=3)
-        plot!([x1 xF y1], [h1 hF H1],
-            color=:magenta,
-            linestyle=:dash)
-        plot!(reshape([x y]'[1:end-1], (2 * size(x, 1) - 1, 1)),
-            reshape([h H]'[1:end-1], (2 * size(x, 1) - 1, 1)),
-            color=:cyan,
-            linestyle=:solid)
-        p2 = plot(xlabel="x", ylabel="y",
-            xlims=(0, 1), ylims=(0, 1),
-            legend=false,
-            framestyle=:box,
-            grid=:true,
-            minorgrid=:true)
-        X = data[:, 1]
-        Y = data[:, 3]
-        plot!(X, Y,
-            seriescolor=:black,
-            markershape=:diamond,
-            markerstrokecolor=:black,
-            markersize=3)
-        X = [0; 1]
-        Y = X
-        plot!(X, Y,
-            seriestype=:line, color=:black,
-            linestyle=:dash)
-        plot!([xD],
-            seriestype=:vline, color=:blue,
-            linestyle=:dash)
-        plot!([xB],
-            seriestype=:vline, color=:red,
-            linestyle=:dash)
-        if q != 1 - 1e-10
-            Y = q / (q - 1) .* X .- xF / (q - 1)
-            plot!(X, Y,
-                linestyle=:dash, color=:magenta)
-        end
-        plot!([xF],
-            seriestype=:vline,
-            color=:magenta,
-            linestyle=:dash)
-        plot!(x, y,
-            seriestype=:steppost, color=:cyan,
-            linestyle=:solid)
-        plot!(x, y,
-            seriescolor=:green,
-            linestyle=:solid,
-            markershape=:circle,
-            markerstrokecolor=:green,
-            markersize=3)
-        display(plot(layout=(2, 1), p1, p2,
-            size=(500, 800),
-            margin=5Plots.mm))
+    if !fig
+        return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
     end
-    return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
+    p1 = plot(xlabel="x,y", ylabel="h,H",
+        xlims=(0, 1),
+        legend=false,
+        framestyle=:box,
+        grid=:true,
+        minorgrid=:true)
+    plot!(data[:, 1], data[:, 2],
+        seriescolor=:blue,
+        linestyle=:solid,
+        markershape=:diamond,
+        markerstrokecolor=:blue,
+        markersize=3)
+    plot!(data[:, 3], data[:, 4],
+        seriescolor=:red,
+        linestyle=:solid,
+        markershape=:diamond,
+        markerstrokecolor=:red,
+        markersize=3)
+    plot!([xD; xD; xD; xF; xB; xB; xB],
+        [g(xD); k(xD); hdelta; hF; hlambda; g(xB); k(xB)],
+        seriescolor=:green,
+        linestyle=:solid,
+        markershape=:circle,
+        markerstrokecolor=:green,
+        markersize=3)
+    plot!([x1 xF y1], [h1 hF H1],
+        color=:magenta,
+        linestyle=:dash)
+    plot!(reshape([x y]'[1:end-1], (2 * size(x, 1) - 1, 1)),
+        reshape([h H]'[1:end-1], (2 * size(x, 1) - 1, 1)),
+        color=:cyan,
+        linestyle=:solid)
+    p2 = plot(xlabel="x", ylabel="y",
+        xlims=(0, 1), ylims=(0, 1),
+        legend=false,
+        framestyle=:box,
+        grid=:true,
+        minorgrid=:true)
+    plot!(data[:, 1], data[:, 3],
+        seriescolor=:black,
+        markershape=:diamond,
+        markerstrokecolor=:black,
+        markersize=3)
+    plot!([0; 1], [0; 1],
+        seriestype=:line, color=:black,
+        linestyle=:dash)
+    plot!([xD],
+        seriestype=:vline, color=:blue,
+        linestyle=:dash)
+    plot!([xB],
+        seriestype=:vline, color=:red,
+        linestyle=:dash)
+    if q != 1 - 1e-10
+        plot!([0; 1], q / (q - 1) .* [0; 1] .- xF / (q - 1),
+            linestyle=:dash, color=:magenta)
+    end
+    plot!([xF],
+        seriestype=:vline,
+        color=:magenta,
+        linestyle=:dash)
+    plot!(x, y,
+        seriestype=:steppost, color=:cyan,
+        linestyle=:solid)
+    plot!(x, y,
+        seriescolor=:green,
+        linestyle=:solid,
+        markershape=:circle,
+        markerstrokecolor=:green,
+        markersize=3)
+    display(plot(layout=(2, 1), p1, p2,
+        size=(500, 800),
+        margin=5Plots.mm))
+    size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
 
