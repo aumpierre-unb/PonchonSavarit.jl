@@ -107,45 +107,46 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         be given alone.""")
     end
     if a == [1, 0, 1]
-        R = qS2R(z, q, S)
+        R = qS2R(data, z, q, S)
     elseif a == [0, 1, 1]
-        q = RS2q(z, R, S)
+        q = RS2q(data, z, R, S)
     end
     r = refmin(data, z, q=q)[1]
     if R <= r
         error("Minimum reflux ratios exceeded.")
     end
-    f(x) = interp1(data[:, 3], data[:, 1], x)
-    g(x) = interp1(data[:, 1], data[:, 2], x)
-    k(x) = interp1(data[:, 3], data[:, 4], x)
-    foo(x) = q / (q - 1) * x - xF / (q - 1)
-    bar(x) = interp1(data[:, 1], data[:, 3], x) - foo(x)
-    x1 = bissection(bar, xB, xD)
-    h1 = g(x1)
-    y1 = interp1(data[:, 1], data[:, 3], x1)
-    H1 = k(y1)
-    hF = (H1 - h1) * (1 - q) + h1
-    hliq = g(xD)
-    Hvap = k(xD)
-    hdelta = (Hvap - hliq) * R + Hvap
+    x2y(x) = interp1(data[:, 1], data[:, 3], x)
+    y2x(y) = interp1(data[:, 3], data[:, 1], y)
+    x2h(x) = interp1(data[:, 1], data[:, 2], x)
+    y2H(x) = interp1(data[:, 3], data[:, 4], x)
+    foo(x) = q - (x2y(x) - xF) / (x2y(x) - x)
+    x1 = newtonraphson(foo, xB)
+    h1 = x2h(x1)
+    y1 = x2y(x1)
+    H1 = y2H(y1)
+    hF = (H1 - h1) / (y1 - x1) * (xF - x1) + h1
+    h2 = x2h(xD)
+    H2 = y2H(xD)
+    hdelta = (H2 - h2) * R + H2
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    x2 = interp2(g, z, [xD; hdelta], [xB; hlambda])
+    g(x) = (H1 - h1) / (y1 - x1) * (x - x1) + h1
+    xi = interp2(g, z, [xD; hdelta], [xB; hlambda])
     y = [xD]
-    x = [f(y[end])]
+    x = [y2x(y[end])]
     while x[end] > xB
-        if x[end] > x2
+        if x[end] > x1
             P = [xD; hdelta]
         else
             P = [xB; hlambda]
         end
-        Q = [x[end]; g(x[end])]
-        y = [y; interp2(k, z, P, Q)]
-        x = [x; f(y[end])]
+        Q = [x[end]; x2h(x[end])]
+        y = [y; interp2(y2H, z, P, Q)]
+        x = [x; y2x(y[end])]
     end
     x = [xD; x]
     y = [y; x[end]]
-    h = g.(x)
-    H = k.(y)
+    h = x2h.(x)
+    H = y2H.(y)
     if !fig
         return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
     end
@@ -168,7 +169,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markerstrokecolor=:red,
         markersize=3)
     plot!([xD; xD; xD; xF; xB; xB; xB],
-        [g(xD); k(xD); hdelta; hF; hlambda; g(xB); k(xB)],
+        [x2h(xD); y2H(xD); hdelta; hF; hlambda; x2h(xB); y2H(xB)],
         seriescolor=:green,
         linestyle=:solid,
         markershape=:circle,
