@@ -79,21 +79,17 @@ function qR2S(data::Matrix{Float64}, z::Vector{Float64}, q::Number, R::Number)
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
     y2H(y) = interp1(data[:, 3], data[:, 4], y)
     x2y(x) = interp1(data[:, 1], data[:, 3], x)
-    if q == 1
-        x1 = xF
-    else
-        foo(x) = q / (1 - q) - (x2y(x) - xF) / (xF - x)
-        x1 = bissection(foo, minimum(data[:, 1]), xF)
-    end
+    foo(x) = q - (x2y(x) - xF) / (x2y(x) - x)
+    x1 = newtonraphson(foo, xB)
     h1 = x2h(x1)
     y1 = x2y(x1)
     H1 = y2H(y1)
-    hF=(H1-h1)/(y1-x1)*(xF-x1)+h1
+    hF = (H1 - h1) / (y1 - x1) * (xF - x1) + h1
     h2 = x2h(xD)
     H2 = y2H(xD)
-    hdelta=(H2-h2)*R+H2
+    hdelta = (H2 - h2) * R + H2
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    h3=x2h(xB)
-    H3=y2H(xB)
+    h3 = x2h(xB)
+    H3 = y2H(xB)
     (hlambda - h3) / (h3 - H3)
 end

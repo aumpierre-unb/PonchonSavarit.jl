@@ -24,6 +24,7 @@ include("qR2S.jl")
 include("qS2R.jl")
 include("RS2q.jl")
 include("bissection.jl")
+include("newtonraphson.jl")
 include("interp1.jl")
 include("interp2.jl")
 
