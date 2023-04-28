@@ -68,7 +68,7 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.8    2.284 0.915    17.980;
       0.9    2.266 0.958    17.680;
       1      2.250 1        17.390];
-x=[0.88 0.46 0.08];
+x=[0.88;0.46;0.08];
 r=refmin(data,x)
 ```
 """
@@ -82,8 +82,8 @@ function refmin(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     end
     g(x) = interp1(data[:, 1], data[:, 2], x)
     k(x) = interp1(data[:, 3], data[:, 4], x)
-    foo(x) = q / (q - 1) * x - xF / (q - 1)
-    bar(x) = interp1(data[:, 1], data[:, 3], x) - foo(x)
+    f(x) = q / (q - 1) * x - xF / (q - 1)
+    bar(x) = interp1(data[:, 1], data[:, 3], x) - f(x)
     x1 = bissection(bar, xB, xD)
     h1 = g(x1)
     y1 = interp1(data[:, 1], data[:, 3], x1)

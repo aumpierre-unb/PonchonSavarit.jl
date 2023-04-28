@@ -41,8 +41,8 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46 0.08];
-S=qR2S(x,0.56,2)
+x=[0.88;0.46;0.08];
+R=qS2R(data,x,0.56,2.4)
 ```
 
 Compute the reflux ratio at the bottom
@@ -67,8 +67,8 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.8    2.284 0.915    17.980;
       0.9    2.266 0.958    17.680;
       1      2.250 1        17.390];
-x=[0.88 0.46 0.08];
-S=qR2S(data,x,1,2)
+x=[0.88;0.46;0.08];
+R=qS2R(data,x,1,2.4)
 ```
 """
 function qS2R(data::Matrix{Float64}, z::Vector{Float64}, q::Number, S::Number)
@@ -76,24 +76,24 @@ function qS2R(data::Matrix{Float64}, z::Vector{Float64}, q::Number, S::Number)
     if xD < xF || xB > xF
         error("Inconsistent feed and/or products compositions.")
     end
+    x2h(x) = interp1(data[:, 1], data[:, 2], x)
+    y2H(y) = interp1(data[:, 3], data[:, 4], y)
+    x2y(x) = interp1(data[:, 1], data[:, 3], x)
     if q == 1
-        q = 1 - 1e-10
+        x1 = xF
+    else
+        foo(x) = q / (1 - q) - (x2y(x) - xF) / (xF - x)
+        x1 = bissection(foo, minimum(data[:, 1]), xF)
     end
-    g(x) = interp1(data(:, 1), data(:, 2), x)
-    k(x) = interp1(data(:, 3), data(:, 4), x)
-    foo(x) = q / (q - 1) * x - xF / (q - 1)
-    bar(x) = interp1(data(:, 1), data(:, 3), x) - foo(x)
-    x1 = bissection(bar, xB, xD)
-    h1 = g(x1)
-    y1 = interp1(data(:, 1), data(:, 3), x1)
-    H1 = k(y1)
-    hF = (H1 - h1) * (1 - q) + h1
-    hliq = g(xD)
-    Hvap = k(xD)
-    hdelta = (Hvap - hliq) * R + Hvap
-    hliq = g(xB)
-    Hvap = k(xB)
-    hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    (hlambda - hliq) / (hliq - Hvap)
+    h1 = x2h(x1)
+    y1 = x2y(x1)
+    H1 = y2H(y1)
+    hF=(H1-h1)/(y1-x1)*(xF-x1)+h1
+    h2 = x2h(xB)
+    H2 = y2H(xB)
+    hlambda=(h2-H2)*S+h2
+    hdelta = (hlambda - hF) / (xB - xF) * (xD - xF) + hF
+    h3=x2h(xD)
+    H3=y2H(xD)
+    (hdelta - H3) / (H3 - h3)
 end
-

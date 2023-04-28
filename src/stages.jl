@@ -219,9 +219,10 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markershape=:circle,
         markerstrokecolor=:green,
         markersize=3)
-    display(plot(layout=(2, 1), p1, p2,
+    plot(layout=(2, 1), p1, p2,
         size=(500, 800),
-        margin=5Plots.mm))
+        margin=5Plots.mm)
+    display(plots!())
     size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
 
