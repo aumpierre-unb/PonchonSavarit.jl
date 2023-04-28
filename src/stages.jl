@@ -20,15 +20,14 @@ the reflux ratio at the top of the column.
 If feed is a saturated liquid, feed quality q = 1,
 feed quality is reset to q = 1 - 1e-10.
 
-By default, `stages` plots a schematic diagram of the solution, fig = true.
-
+By default, fig = true, `stages` plots a schematic diagram of the solution.
 If fig = false is given, no plot is shown.
 
 `stages` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 
 
-See also: `refmin`, `qR2S`.
+See also: `refmin`, `qR2S`, `qS2R`, `RS2q`.
 
 Examples
 ==========
@@ -38,9 +37,9 @@ from the bottom to the top of the column given
 a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
-the composition of the feed is 46 %,
+the composition of the feed is 44 %,
 the composition of the bottoms is 8 %,
-the feed quality is 54 % and
+the feed quality is 55 % and
 the reflux ratio at the top of the column is
 70 % higher that the minimum reflux ratio:
 
@@ -54,9 +53,9 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.685 0.349 0.86  1.465;
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
-x=[0.88 0.46 0.08];
-r=refmin(data,x,q=0.56)[1];
-N=stages(data,x,q=0.56,R=1.70*r,fig=false)
+x=[0.88;0.55;0.08];
+r=refmin(data,x,q=0.55)[1];
+N=stages(data,x,q=0.55,R=1.70*r,fig=false)
 ```
 
 Compute the number of theoretical stages
@@ -65,7 +64,7 @@ from the bottom to the top of the column given
 a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
-the composition of the feed is 46 %,
+the composition of the feed is 44 %,
 the composition of the bottoms is 8 %,
 the feed is a saturated liquid and
 the reflux ratio at the top of the column is
@@ -86,9 +85,9 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.8    2.284 0.915    17.980;
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
-x=[0.88 0.46 0.11];
+x=[0.88;0.46;0.11];
 r=refmin(data,x)[1];
-N=stages(data,x,R=1.70*r)
+N=stages(data,x,q=1,R=1.70*r)
 ```
 """
 function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Number=NaN, R::Number=NaN, S::Number=NaN, fig::Bool=true)
@@ -222,7 +221,6 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     plot(layout=(2, 1), p1, p2,
         size=(500, 800),
         margin=5Plots.mm)
-    display(plots!())
+    display(plot!())
     size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
 end
-
