@@ -9,9 +9,10 @@ of a distillation column
 using the Ponchon-Savarit method given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
-the vector of the fractions of the products and the feed,
-the feed quality and
-the reflux ratio at the top of the column.
+the vector of the fractions of the products and
+two parameters among the feed quality,
+the reflux ratio at the top of the column and
+the reflux ratio at the bottom of the column.
 
 If feed is a saturated liquid, feed quality q = 1,
 feed quality is reset to q = 1 - 1e-10.
