@@ -246,7 +246,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markershape=:circle,
         markerstrokecolor=:green,
         markersize=3)
-    plot(layout=(2, 1), p1, p2,
+    plot!(layout=(2, 1), p1, p2,
         size=(500, 800),
         margin=5Plots.mm)
     display(plot!())
