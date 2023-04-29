@@ -66,7 +66,8 @@ By default, fig = true, stages plots a schematic diagram of the solution. If fig
 **Syntax:**
 
 ```julia
-stages(data::Union{Matrix{Float64},Function},z::Vector{Float64};q::Number=NaN,R::Number=NaN,S::Number=NaN,fig::Bool=true)
+stages(data::Union{Matrix{Float64},Function},z::Vector{Float64};
+  q::Number=NaN,R::Number=NaN,S::Number=NaN,fig::Bool=true)
 ```
 
 **Examples:**
