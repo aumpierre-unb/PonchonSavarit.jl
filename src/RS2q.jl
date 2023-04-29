@@ -1,4 +1,4 @@
-include("bissection.jl")
+include("newtonraphson.jl")
 include("interp1.jl")
 
 @doc raw"""
@@ -76,9 +76,10 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     if xD < xF || xB > xF
         error("Inconsistent feed and/or products compositions.")
     end
+    x2y(x) = interp1(data[:, 1], data[:, 3], x)
+    y2x(y) = interp1(data[:, 3], data[:, 1], y)
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
     y2H(y) = interp1(data[:, 3], data[:, 4], y)
-    x2y(x) = interp1(data[:, 1], data[:, 3], x)
     h2 = x2h(xD)
     H2 = y2H(xD)
     hdelta = (H2 - h2) * R + H2
@@ -86,8 +87,8 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     H3 = y2H(xB)
     hlambda = (h3 - H3) * S + h3
     hF = (hdelta - hlambda) / (xD - xB) * (xF - xB) + hlambda
-    foo(x) = (y2H(x2y(x)) - x2h(x)) / (x2y(x) - x) - (y2H(x2y(x)) - hF) / (x2y(x) - xF)
-    x1 = newtonraphson(foo, xF)
+    foo(x) = (y2H(x2y(x)) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
+    x1 = newtonraphson(foo, xB)
     h1 = x2h(x1)
     y1 = x2y(x1)
     H1 = y2H(y1)

@@ -1,4 +1,4 @@
-include("bissection.jl")
+include("newtonraphson.jl")
 include("interp1.jl")
 
 @doc raw"""
@@ -84,7 +84,8 @@ function refmin(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     y2H(x) = interp1(data[:, 3], data[:, 4], x)
     f(x) = q / (q - 1) * x - xF / (q - 1)
     foo(x) = interp1(data[:, 1], data[:, 3], x) - f(x)
-    x1 = bissection(foo, xB, xD)
+    # x1 = bissection(foo, xB, xD)
+    x1 = newtonraphson(foo, xF)
     h1 = x2h(x1)
     y1 = interp1(data[:, 1], data[:, 3], x1)
     H1 = y2H(y1)
