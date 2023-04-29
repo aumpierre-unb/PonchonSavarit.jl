@@ -29,8 +29,8 @@ and their enthalpies at equilibrium,
 the composition of the distillate is 93 %,
 the composition of the feed is 41 %,
 the composition of the bottoms is 7 %,
-the reflux ratio at the top of the column is 1.9 and
-the reflux ratio at the bottom of the column is 2.1:
+the reflux ratio at the top of the column is 2 and
+the reflux ratio at the bottom of the column is 1.7:
 
 ```
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
@@ -47,7 +47,7 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.9    2.266 0.958    17.680;
       1.     2.250 1.       17.390];
 x=[0.93;0.41;0.07];
-q=RS2q(data,x,1.9,2.1)
+q=RS2q(data,x,2.1,1.7)
 ```
 
 Compute the feed quality
@@ -80,9 +80,10 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
         error("Inconsistent feed and/or products compositions.")
     end
     x2y(x) = interp1(data[:, 1], data[:, 3], x)
-    y2x(y) = interp1(data[:, 3], data[:, 1], y)
+    # y2x(y) = interp1(data[:, 3], data[:, 1], y)
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
     y2H(y) = interp1(data[:, 3], data[:, 4], y)
+    x2H(x) = interp1(data[:, 1], data[:, 4], x)
     h2 = x2h(xD)
     H2 = y2H(xD)
     hdelta = (H2 - h2) * R + H2
@@ -90,7 +91,7 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     H3 = y2H(xB)
     hlambda = (h3 - H3) * S + h3
     hF = (hdelta - hlambda) / (xD - xB) * (xF - xB) + hlambda
-    foo(x) = (y2H(x2y(x)) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
+    foo(x) = (x2H(x) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
     x1 = newtonraphson(foo, xB)
     h1 = x2h(x1)
     y1 = x2y(x1)
