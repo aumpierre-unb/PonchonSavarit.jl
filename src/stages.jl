@@ -32,60 +32,6 @@ See also: `refmin`, `qR2S`, `qS2R`, `RS2q`.
 Examples
 ==========
 Compute the number of theoretical stages
-of a distillation column for oxygen and nitrogen
-from the bottom to the top of the column given
-a matrix that relates the liquid and the vapor fractions
-and their enthalpies at equilibrium,
-the composition of the distillate is 88 %,
-the composition of the feed is 44 %,
-the composition of the bottoms is 8 %,
-the feed quality is 55 % and
-the reflux ratio at the top of the column is
-70 % higher that the minimum reflux ratio:
-
-```
-data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
-      0.075 0.418 0.193 1.755;
-      0.17  0.415 0.359 1.685;
-      0.275 0.410 0.50  1.625;
-      0.39  0.398 0.63  1.570;
-      0.525 0.378 0.75  1.515;
-      0.685 0.349 0.86  1.465;
-      0.88  0.300 0.955 1.425;
-      1.    0.263 1.    1.405];
-x=[0.88;0.55;0.08];
-r,s=refmin(data,x,q=0.55)
-N=stages(data,x,q=0.55,R=1.70*r,fig=false)
-```
-
-Compute the number of theoretical stages
-of a distillation column for oxygen and nitrogen
-from the bottom to the top of the column given
-a matrix that relates the liquid and the vapor fractions
-and their enthalpies at equilibrium,
-the composition of the distillate is 92 %,
-the composition of the feed is 59 %,
-the composition of the bottoms is 9 %,
-the reflux ratio at the bottom of the column is 1.9,
-the reflux ratio at the top of the column is 1.5
-and plot a schematic diagram of the solution:
-
-```
-data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
-      0.075 0.418 0.193 1.755;
-      0.17  0.415 0.359 1.685;
-      0.275 0.410 0.50  1.625;
-      0.39  0.398 0.63  1.570;
-      0.525 0.378 0.75  1.515;
-      0.685 0.349 0.86  1.465;
-      0.88  0.300 0.955 1.425;
-      1.    0.263 1.    1.405];
-x=[0.92;0.59;0.09];
-q=RS2q(data,x,1.5,1.9)
-N=stages(data,x,R=1.5,S=1.9)
-```
-
-Compute the number of theoretical stages
 of a distillation column for acetone and methanol
 from the bottom to the top of the column given
 a matrix that relates the liquid and the vapor fractions
@@ -94,7 +40,7 @@ the composition of the distillate is 93 %,
 the composition of the feed is 41 %,
 the composition of the bottoms is 7 %,
 the feed is a saturated liquid and
-the reflux ratio at the bottom of the column is
+the reflux ratio at the top of the column is
 55 % higher that the minimum reflux ratio,
 and plot a schematic diagram of the solution:
 
@@ -114,7 +60,61 @@ data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       1.     2.250 1.       17.390];
 x=[0.93;0.41;0.07];
 r,s=refmin(data,x)
-N=stages(data,x,q=1,R=1.70*r)
+N=stages(data,x,q=1,R=1.55*r)
+```
+
+Compute the number of theoretical stages
+of a distillation column for oxygen and nitrogen
+from the bottom to the top of the column given
+a matrix that relates the liquid and the vapor fractions
+and their enthalpies at equilibrium,
+the composition of the distillate is 88 %,
+the composition of the feed is 44 %,
+the composition of the bottoms is 8 %,
+the feed quality is 55 % and
+the reflux ratio at the bottom of the column is
+46 % higher that the minimum reflux ratio and
+plot a schematic diagram of the solution:
+
+```
+data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
+      0.075 0.418 0.193 1.755;
+      0.17  0.415 0.359 1.685;
+      0.275 0.410 0.50  1.625;
+      0.39  0.398 0.63  1.570;
+      0.525 0.378 0.75  1.515;
+      0.685 0.349 0.86  1.465;
+      0.88  0.300 0.955 1.425;
+      1.    0.263 1.    1.405];
+x=[0.88;0.44;0.08];
+r,s=refmin(data,x,q=0.55)
+N=stages(data,x,q=0.55,S=1.46*s)
+```
+
+Compute the number of theoretical stages
+of a distillation column for oxygen and nitrogen
+from the bottom to the top of the column given
+a matrix that relates the liquid and the vapor fractions
+and their enthalpies at equilibrium,
+the composition of the distillate is 92 %,
+the composition of the feed is 59 %,
+the composition of the bottoms is 9 %,
+the reflux ratio at the bottom of the column is 1.9,
+the reflux ratio at the top of the column is 1.5:
+
+```
+data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
+      0.075 0.418 0.193 1.755;
+      0.17  0.415 0.359 1.685;
+      0.275 0.410 0.50  1.625;
+      0.39  0.398 0.63  1.570;
+      0.525 0.378 0.75  1.515;
+      0.685 0.349 0.86  1.465;
+      0.88  0.300 0.955 1.425;
+      1.    0.263 1.    1.405];
+x=[0.92;0.59;0.09];
+q=RS2q(data,x,1.5,1.9)
+N=stages(data,x,R=1.5,S=1.9,fig=false)
 ```
 """
 function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Number=NaN, R::Number=NaN, S::Number=NaN, fig::Bool=true)
@@ -247,7 +247,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markerstrokecolor=:green,
         markersize=3)
     plot!(layout=(2, 1), p1, p2,
-        size=(500, 800),
+        size=(600, 900),
         margin=5Plots.mm)
     display(plot!())
     size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
