@@ -291,7 +291,7 @@ RS2q(data::Matrix{Float64}, z::Vector{Float64}, q::Number, R::Number)
 
 Compute the feed quality of a distillation column for acetone and methanol given a matrix that relates the liquid and the vapor fractions and their enthalpies at equilibrium, the composition of the distillate is 93 %, the composition of the feed is 41 %, the composition of the bottoms is 7 %, the reflux ratio at the top of the column is 2 and the reflux ratio at the bottom of the column is 1.7:
 
-```
+```julia
 data=[2.5e-4 3.235 1.675e-3 20.720; # enthalpy in kcal/mol
       0.05   2.666 0.267    20.520;
       0.1    2.527 0.418    20.340;
@@ -311,7 +311,7 @@ q=RS2q(data,x,2.1,1.7)
 
 Compute the feed quality of a distillation column for oxygen and nitrogen given a matrix that relates the liquid and the vapor fractions and their enthalpies at equilibrium, the composition of the distillate is 88 %, the composition of the feed is 44 %, the composition of the bottoms is 8 %, the reflux ratio at the top of the column is 2 and the reflux ratio at the bottom of the column is 1.3:
 
-```
+```julia
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.075 0.418 0.193 1.755;
       0.17  0.415 0.359 1.685;
