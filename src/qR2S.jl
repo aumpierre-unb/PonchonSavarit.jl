@@ -23,7 +23,7 @@ See also: `stages`, `refmin`, `qS2R`, `RS2q`.
 
 Examples
 ==========
-Compute the reflux ratio at the bottom of the column
+Compute the reflux ratio at the bottom
 of a distillation column for acetone and methanol given
 a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,

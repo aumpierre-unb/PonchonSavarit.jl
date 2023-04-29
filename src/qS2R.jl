@@ -51,7 +51,7 @@ x=[0.93;0.41;0.07];
 R=qS2R(data,x,1,1.7)
 ```
 
-Compute the reflux ratio at the top of the column
+Compute the reflux ratio at the top
 of a distillation column for oxygen and nitrogen given
 a matrix that relates the liquid and the vapor fractions
 and their enthalpies at equilibrium,
@@ -59,7 +59,7 @@ the composition of the distillate is 88 %,
 the composition of the feed is 44 %,
 the composition of the bottoms is 8 %,
 the feed quality is 55 % and
-the reflux ratio at the bottom of the column is 2:
+the reflux ratio at the bottom of the column is 1.3:
 
 ```
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
@@ -72,7 +72,7 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
 x=[0.88;0.44;0.08];
-R=qS2R(data,x,0.55,2)
+R=qS2R(data,x,0.55,1.3)
 ```
 """
 function qS2R(data::Matrix{Float64}, z::Vector{Float64}, q::Number, S::Number)

@@ -1,4 +1,5 @@
 include("newtonraphson.jl")
+include("bissection.jl")
 include("interp1.jl")
 
 @doc raw"""
@@ -57,8 +58,8 @@ and their enthalpies at equilibrium,
 the composition of the distillate is 88 %,
 the composition of the feed is 44 %,
 the composition of the bottoms is 8 %,
-the reflux ratio at the top of the column is 1.9 and
-the reflux ratio at the bottom of the column is 2.1:
+the reflux ratio at the top of the column is 2 and
+the reflux ratio at the bottom of the column is 1.3:
 
 ```
 data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
@@ -71,7 +72,7 @@ data=[0.    0.420 0.    1.840; # enthalpy in kcal/mmol
       0.88  0.300 0.955 1.425;
       1.    0.263 1.    1.405];
 x=[0.88;0.44;0.08];
-q=RS2q(data,x,1.9,2.1)
+q=RS2q(data,x,2,1.3)
 ```
 """
 function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
@@ -80,7 +81,6 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
         error("Inconsistent feed and/or products compositions.")
     end
     x2y(x) = interp1(data[:, 1], data[:, 3], x)
-    # y2x(y) = interp1(data[:, 3], data[:, 1], y)
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
     y2H(y) = interp1(data[:, 3], data[:, 4], y)
     x2H(x) = interp1(data[:, 1], data[:, 4], x)
@@ -92,7 +92,8 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     hlambda = (h3 - H3) * S + h3
     hF = (hdelta - hlambda) / (xD - xB) * (xF - xB) + hlambda
     foo(x) = (x2H(x) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
-    x1 = newtonraphson(foo, xB)
+    x0=interp2(x2h, z, [xB hlambda], [xD hdelta])
+    x1 = newtonraphson(foo, x0)
     h1 = x2h(x1)
     y1 = x2y(x1)
     H1 = y2H(y1)
