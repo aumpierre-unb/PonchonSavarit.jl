@@ -203,9 +203,12 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markershape=:circle,
         markerstrokecolor=:green,
         markersize=3)
-    plot!([x1 xF y1], [h1 hF H1],
+    plot!([x1; xF; y1], [h1; hF; H1],
+        linestyle=:dash,
         color=:magenta,
-        linestyle=:dash)
+        markershape=:circle,
+        markerstrokecolor=:magenta,
+        markersize=3)
     plot!(reshape([x y]'[1:end-1], (2 * size(x, 1) - 1, 1)),
         reshape([h H]'[1:end-1], (2 * size(x, 1) - 1, 1)),
         color=:cyan,
