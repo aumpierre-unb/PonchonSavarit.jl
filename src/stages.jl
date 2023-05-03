@@ -206,7 +206,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     plot!([x1; xF; y1], [h1; hF; H1],
         linestyle=:dash,
         color=:magenta,
-        markershape=:circle,
+        markershape=:square,
         markerstrokecolor=:magenta,
         markersize=3)
     plot!(reshape([x y]'[1:end-1], (2 * size(x, 1) - 1, 1)),
