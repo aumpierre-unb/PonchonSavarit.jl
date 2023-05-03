@@ -1,7 +1,7 @@
 name = "PonchonSavarit"
 uuid = "6ede814e-e28c-40c4-8292-4ab1886a440f"
 authors = ["Alexandre Umpierre (aumpierre@gmail.com)"]
-version = "1.0.0-alpha"
+version = "1.0.0"
 
 [deps]
 PkgTemplates = "14b8a8f1-9102-5b29-a752-f990bacb7fe1"
