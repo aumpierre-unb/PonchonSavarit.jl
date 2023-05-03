@@ -27,7 +27,6 @@ If fig = false is given, no plot is shown.
 `stages` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 
-
 See also: `refmin`, `qR2S`, `qS2R`, `RS2q`.
 
 Examples
