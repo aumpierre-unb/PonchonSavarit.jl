@@ -1,6 +1,6 @@
 ### TODO
 
-### McCabeThiele 1.0.0 (2023-05-03)
+### PonchonSavarit 1.0.0 (2023-05-03)
 * Main functions' parameters typed
 * stages modified to accept any combination
   of two parameters among the feed quality,
@@ -8,13 +8,13 @@
   the reflux ratio at the bottom of the column
 * New functions qS2R and RS2q
 
-### McCabeThiele 0.1.2 (2023-04-09)
+### PonchonSavarit 0.1.2 (2023-04-09)
 * Minor changes on docstrings
 
-### McCabeThiele 0.1.1 (2022-10-20)
+### PonchonSavarit 0.1.1 (2022-10-20)
 * Major changes on functions
 * Minor changes on docstrings
 
-### McCabeThiele 0.1.0 (2022-10-18)
+### PonchonSavarit 0.1.0 (2022-10-18)
 * First release
 * Package under construction
