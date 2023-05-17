@@ -18,9 +18,6 @@ the vector of the fractions of the products and the feed,
 the feed quality, and
 the reflux ratio at the top of the column.
 
-If feed is a saturated liquid, feed quality q = 1,
-feed quality is reset to q = 1 - 1e-10.
-
 By default, fig = true, `stages` plots a schematic diagram of the solution.
 If fig = false is given, no plot is shown.
 
