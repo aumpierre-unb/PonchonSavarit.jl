@@ -59,8 +59,6 @@ PonchonSavarit provides the following functions:
 
 stages computes the number of theoretical stages of a distillation column using the Ponchón-Savarit method from the top to the bottom of the column given a x-h-y-H matrix of the liquid and the vapor fractions at equilibrium and their enthalpies, the vector of the fractions of the products and two parameters among the feed quality, the reflux ratio at the top of the column and the reflux ratio at the bottom of the column.
 
-If feed is a saturated liquid, feed quality q = 1, feed quality is reset to q = 1 - 1e-10.
-
 By default, fig = true, stages plots a schematic diagram of the solution. If fig = false is given, no plot is shown.
 
 **Syntax:**
@@ -131,8 +129,6 @@ N=stages(data,x,R=1.5,S=1.9,fig=false)
 
 refmin computes the minimum value of the reflux ratio of a distillation column using the Ponchón-Savarit method given a x-h-y-H matrix of the liquid and the vapor fractions at equilibrium and their enthalpies, the vector of the fractions of the products and the feed, and the feed quality.
 
-If feed is a saturated liquid, feed quality q = 1, feed quality is reset to q = 1 - 1e-10.
-
 **Syntax:**
 
 ```julia
@@ -180,8 +176,6 @@ r,s=refmin(data,x,q=0.55)
 ### **qR2S**
 
 qR2S computes the reflux ratio at the bottom of a distillation column using the Ponchón-Savarit method given a x-h-y-H matrix of the liquid and the vapor fractions at equilibrium and their enthalpies, the vector of the fractions of the products and the feed, the feed quality, and the reflux ratio at the top of the column.
-
-If feed is a saturated liquid, feed quality q = 1, feed quality is reset to q = 1 - 1e-10.
 
 **Syntax:**
 
@@ -279,8 +273,6 @@ R=qS2R(data,x,0.55,1.3)
 ### **RS2q**
 
 RS2q computes the feed quality of a distillation column using the Ponchón-Savarit method given a x-h-y-H matrix of the liquid and the vapor fractions at equilibrium and their enthalpies, the vector of the fractions of the products and the feed and the reflux ratios at the top and at the bottom of the column.
-
-If feed is a saturated liquid, feed quality q = 1, feed quality is reset to q = 1 - 1e-10.
 
 **Syntax:**
 
