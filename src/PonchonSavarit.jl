@@ -5,7 +5,7 @@ using the Ponchón-Savarit method.
 
 Author: Alexandre Umpierre `aumpierre@gmail.com`
 
-Maintainer's repository: `https://github.com/aumpierre-unb/Ponchón-Savarit.jl`
+Maintainer's repository: `https://github.com/aumpierre-unb/PonchonSavarit.jl`
 
 Citation (any version): `DOI 10.5281/zenodo.7218007`
 
