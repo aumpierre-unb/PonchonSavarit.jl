@@ -1,5 +1,8 @@
 ### TODO
 
+### PonchonSavarit 1.0.1 (2023-05-17)
+* Minor changes on functions and docstrings
+
 ### PonchonSavarit 1.0.0 (2023-05-03)
 * Main functions' parameters typed
 * stages modified to accept any combination
