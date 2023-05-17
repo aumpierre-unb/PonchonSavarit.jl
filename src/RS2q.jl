@@ -13,9 +13,6 @@ at equilibrium and their enthalpies,
 the vector of the fractions of the products and the feed and
 the reflux ratios at the top and at the bottom of the column.
 
-If feed is a saturated liquid, feed quality q = 1,
-feed quality is reset to q = 1 - 1e-10.
-
 `RS2q` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 
@@ -94,8 +91,6 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     foo(x) = (x2H(x) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
     x0=interp2(x2h, z, [xB hlambda], [xD hdelta])
     x1 = newtonraphson(foo, x0)
-    h1 = x2h(x1)
     y1 = x2y(x1)
-    H1 = y2H(y1)
     (y1 - xF) / (y1 - x1)
 end

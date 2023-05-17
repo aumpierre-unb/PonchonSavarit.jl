@@ -122,9 +122,6 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     if xD < xF || xB > xF
         error("Inconsistent feed and/or products compositions.")
     end
-    if q == 1
-        q = 1 - 1e-10
-    end
     a = isnan.([q, R, S]) .!= 1
     if sum(a) != 2
         error("""stages requires that two parameter among
@@ -177,7 +174,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     if !fig
         return size(x, 1) - 1 - 1 + (xB - x[end-1]) / (x[end] - x[end-1])
     end
-    p1 = plot(xlabel="x,y", ylabel="h,H",
+    plot1 = plot(xlabel="x,y", ylabel="h,H",
         xlims=(0, 1),
         legend=false,
         framestyle=:box,
@@ -212,7 +209,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         reshape([h H]'[1:end-1], (2 * size(x, 1) - 1, 1)),
         color=:cyan,
         linestyle=:solid)
-    p2 = plot(xlabel="x", ylabel="y",
+    plot2 = plot(xlabel="x", ylabel="y",
         xlims=(0, 1), ylims=(0, 1),
         legend=false,
         framestyle=:box,
@@ -249,7 +246,7 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         markershape=:circle,
         markerstrokecolor=:green,
         markersize=3)
-    plot!(layout=(2, 1), p1, p2,
+    plot!(layout=(2, 1), plot1, plot2,
         size=(600, 900),
         margin=5Plots.mm)
     display(plot!())

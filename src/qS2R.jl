@@ -13,9 +13,6 @@ the vector of the fractions of the products and the feed,
 the feed quality and
 the reflux ratio at the bottom of the column.
 
-If feed is a saturated liquid, feed quality q = 1,
-feed quality is reset to q = 1 - 1e-10.
-
 `qS2R` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 

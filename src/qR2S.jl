@@ -14,9 +14,6 @@ two parameters among the feed quality,
 the reflux ratio at the top of the column and
 the reflux ratio at the bottom of the column.
 
-If feed is a saturated liquid, feed quality q = 1,
-feed quality is reset to q = 1 - 1e-10.
-
 `qR2S` is a main function of
 the `PonchonSavarit` toolbox for Julia.
 
