@@ -10,7 +10,7 @@ using Plots
 
 `stages` computes the number of theoretical stages
 of a distillation column
-using the Ponchon-Savarit method
+using the Ponchón-Savarit method
 from the top to the bottom of the column given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
