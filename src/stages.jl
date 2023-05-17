@@ -14,9 +14,10 @@ using the Ponchón-Savarit method
 from the top to the bottom of the column given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
-the vector of the fractions of the products and the feed,
-the feed quality, and
-the reflux ratio at the top of the column.
+the vector of the fractions of the products and the feed and
+two paramaeters aong the feed quality,
+the reflux ratio at the top of the column and
+the reflux ratio at the bottom of the column.
 
 By default, fig = true, `stages` plots a schematic diagram of the solution.
 If fig = false is given, no plot is shown.
@@ -132,14 +133,13 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     elseif a == [0, 1, 1]
         q = RS2q(data, z, R, S)
     end
-    r = refmin(data, z, q=q)[1]
-    if R <= r
+    if R <= refmin(data, z, q=q)[1]
         error("Minimum reflux ratios exceeded.")
     end
     x2y(x) = interp1(data[:, 1], data[:, 3], x)
     y2x(y) = interp1(data[:, 3], data[:, 1], y)
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
-    y2H(x) = interp1(data[:, 3], data[:, 4], x)
+    y2H(y) = interp1(data[:, 3], data[:, 4], y)
     foo(x) = q - (x2y(x) - xF) / (x2y(x) - x)
     x1 = newtonraphson(foo, xB)
     h1 = x2h(x1)
@@ -150,8 +150,8 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     H2 = y2H(xD)
     hdelta = (H2 - h2) * R + H2
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
-    g(x) = (H1 - h1) / (y1 - x1) * (x - x1) + h1
-    xi = interp2(g, z, [xD; hdelta], [xB; hlambda])
+    bar(x) = (H1 - h1) / (y1 - x1) * (x - x1) + h1
+    xi = interp2(bar, z, [xD; hdelta], [xB; hlambda])
     y = [xD]
     x = [y2x(y[end])]
     while x[end] > xB

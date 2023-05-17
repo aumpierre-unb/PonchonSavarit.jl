@@ -4,13 +4,15 @@ include("interp1.jl")
 @doc raw"""
 `refmin(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Number=1)`
 
-`refmin` computes the minimum value of the reflux ratio
+`refmin` computes the minimum reflux ratios
 of a distillation column
 using the Ponchón-Savarit method given
 a x-h-y-H matrix of the liquid and the vapor fractions
 at equilibrium and their enthalpies,
 the vector of the fractions of the products and the feed, and
 the feed quality.
+
+If q = 1, q is reset to q = 1 - 1e-10.
 
 `refmin` is a main function of
 the `PonchonSavarit` toolbox for Julia.
@@ -75,7 +77,7 @@ function refmin(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
         error("Inconsistent feed and/or products compositions.")
     end
     if q == 1
-        q = 1 - 1e-10
+        q = q - 1e-10
     end
     x2h(x) = interp1(data[:, 1], data[:, 2], x)
     y2H(x) = interp1(data[:, 3], data[:, 4], x)

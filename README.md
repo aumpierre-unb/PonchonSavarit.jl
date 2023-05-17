@@ -129,6 +129,8 @@ N=stages(data,x,R=1.5,S=1.9,fig=false)
 
 refmin computes the minimum value of the reflux ratio of a distillation column using the Ponchón-Savarit method given a x-h-y-H matrix of the liquid and the vapor fractions at equilibrium and their enthalpies, the vector of the fractions of the products and the feed, and the feed quality.
 
+If q = 1, q is reset to q = 1 - 1e-10.
+
 **Syntax:**
 
 ```julia
