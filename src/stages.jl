@@ -151,7 +151,6 @@ function stages(data::Union{Matrix{Float64},Function}, z::Vector{Float64}; q::Nu
     hdelta = (H2 - h2) * R + H2
     hlambda = (hdelta - hF) / (xD - xF) * (xB - xF) + hF
     bar(x) = (H1 - h1) / (y1 - x1) * (x - x1) + h1
-    xi = interp2(bar, z, [xD; hdelta], [xB; hlambda])
     y = [xD]
     x = [y2x(y[end])]
     while x[end] > xB

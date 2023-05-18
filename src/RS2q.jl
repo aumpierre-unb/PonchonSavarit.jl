@@ -89,7 +89,7 @@ function RS2q(data::Matrix{Float64}, z::Vector{Float64}, R::Number, S::Number)
     hlambda = (h3 - H3) * S + h3
     hF = (hdelta - hlambda) / (xD - xB) * (xF - xB) + hlambda
     foo(x) = (x2H(x) - x2h(x)) / (x2y(x) - x) - (x2h(x) - hF) / (x - xF)
-    x0=interp2(x2h, z, [xB hlambda], [xD hdelta])
+    x0 = interp2(x2h, z, [xB; hlambda], [xD; hdelta])
     x1 = newtonraphson(foo, x0)
     y1 = x2y(x1)
     (y1 - xF) / (y1 - x1)
