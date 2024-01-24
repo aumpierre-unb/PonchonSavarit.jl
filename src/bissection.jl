@@ -1,12 +1,12 @@
 @doc raw"""
-`bissection` computes computes the root of
-a function using the method of bissection
+`bisection` computes computes the root of
+a function using the method of bisection
 given it is found between the guess values.
 
-`bissection` is an internal function of
+`bisection` is an internal function of
 the `PonchonSavarit` toolbox.
 """
-function bissection(f, x1, x2)
+function bisection(f, x1, x2)
     if f(x1) * f(x2) > 0
         return
     end

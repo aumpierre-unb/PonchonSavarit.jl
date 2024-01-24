@@ -1,5 +1,5 @@
 include("newtonraphson.jl")
-include("bissection.jl")
+include("bisection.jl")
 include("interp1.jl")
 
 @doc raw"""
