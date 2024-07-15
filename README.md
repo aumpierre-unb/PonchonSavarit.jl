@@ -3,6 +3,7 @@
 [![DOI](https://zenodo.org/badge/553159585.svg)](https://zenodo.org/badge/latestdoi/553159585)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![version](https://juliahub.com/docs/PonchonSavarit/version.svg)](https://juliahub.com/ui/Packages/PonchonSavarit/WauTj)
+[![pkgeval](https://juliahub.com/docs/General/PonchonSavarit/stable/pkgeval.svg)](https://juliahub.com/ui/Packages/General/PonchonSavarit)
 
 ## Installing and Loading PonchonSavarit
 
