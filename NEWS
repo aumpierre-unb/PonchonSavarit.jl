@@ -1,7 +1,7 @@
 ### TODO
 
-### PonchonSavarit 1.0.1 (2023-05-17)
-* Minor changes on functions and docstrings
+### PonchonSavarit 1.0.1-alpha (2024-07-16)
+* Minor changes in functions and docstrings
 
 ### PonchonSavarit 1.0.0 (2023-05-03)
 * Main functions' parameters typed
@@ -12,11 +12,11 @@
 * New functions qS2R and RS2q
 
 ### PonchonSavarit 0.1.2 (2023-04-09)
-* Minor changes on docstrings
+* Minor changes in docstrings
 
 ### PonchonSavarit 0.1.1 (2022-10-20)
-* Major changes on functions
-* Minor changes on docstrings
+* Major changes in functions
+* Minor changes in docstrings
 
 ### PonchonSavarit 0.1.0 (2022-10-18)
 * First release

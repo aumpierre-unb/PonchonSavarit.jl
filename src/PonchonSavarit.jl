@@ -7,7 +7,7 @@ Author: Alexandre Umpierre `aumpierre@gmail.com`
 
 Maintainer's repository: `https://github.com/aumpierre-unb/PonchonSavarit.jl`
 
-Citation (any version): `DOI 10.5281/zenodo.7218007`
+Citation (all versions): `DOI 10.5281/zenodo.7218007`
 
 See also: `stages`, `refmin`, `qR2S`, `qS2R`, `RS2q`.
 """
